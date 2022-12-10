@@ -203,3 +203,15 @@ class Graph:
                         queue.enqueue(i)
                         newGraph.addEdge(node, i, 1)
         return newGraph
+
+    def load2DGrid(self, file):
+        try: grid = open(file, "r")
+        except:
+                print("File " + file + " does not exist!")
+                sys.exit(0)
+        lines = grid.readlines()
+        for i in range(len(lines)):
+            lines[i] = lines[i].strip()
+            lines[i] = lines[i].split(" ") # type: ignore #
+            self.addEdge(int(lines[i][0]), int(lines[i][1]), int(lines[i][2]))
+        grid.close()
