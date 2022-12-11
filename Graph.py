@@ -144,28 +144,39 @@ class Graph:
             self.addEdge(int(lines[i][0]), int(lines[i][1]), int(lines[i][2]))
         grid.close()
 
-#The resulting graph obtained with DFS and BFS is shown in Figure 5:
-#The user can also select to compute the MSTW and return the new optimal weighted graph. The code computes then the MSTW of the original graph (this is also a graph data structure). The number of vertices is the same than the original graph but the number of edges is nVertex-1 (11 in the example). Once the new graph is obtained, the code returns the new info containing the optimized connections with weights as well as the total minimum weight, and the new plot.
-#The method mstw that implement the Prim’s algorithm for computing the MSTW (that is returned as a new grid-graph). You will use a Heap to implement the priority queue. You need first to implement a new Edge class with a constructor that accepts three input arguments: the source node number, the destination node number, and the weight. This way, you will be able to insert or remove object of type Edge in the Heap.
-#The provided class Heap already considers the smallest “item” as priority item. The Heap is checking the items with symbol < and > when you trickledown or up. Here you want to overload these operator in the class Edge where you could just compare the relative weight of the edges.
-    # def mstw(self,node) -> "Graph":
-    #     heap = Heap()
-    #     newGraph = Graph(self.nx, self.ny)
-    #     self.vertices[node].visited = True
-    #     for i in range(self.nVertex):
-    #         if self.adjMatrix[node][i] != 0:
-    #             heap.insert(Edge(node, i, self.adjMatrix[node][i])) # type: ignore
-    #     while not heap.isEmpty():
-    #         edge = heap.remove()
-    #         if not self.vertices[edge].visited:
-    #             self.vertices[edge].visited = True
-    #             newGraph.addEdge(edge, edge.dest, edge.weight) # type: ignore
-    #             for i in range(self.nVertex):
-    #                 if self.adjMatrix[edge.dest][i] != 0 and not self.vertices[i].visited:
-    #                     heap.insert(Edge(edge.dest, i, self.adjMatrix[edge.dest][i])) # type: ignore
-    #     for n in self.vertices: n.visited = False
-    #     return newGraph
 
+    def mstw(self,node) -> "Graph":
+        heap = Heap()
+        newGraph = Graph(self.nx, self.ny)
+        self.vertices[node].visited = True
+        for i in range(self.nVertex):
+            if self.adjMatrix[node][i] != 0:
+                heap.insert(Edge(node, i, self.adjMatrix[node][i])) # type: ignore
+        while not heap.isEmpty():
+            edge = heap.remove()
+            if not self.vertices[edge.dest].visited: # type: ignore
+                self.vertices[edge.dest].visited = True # type: ignore
+                newGraph.addEdge(edge.src, edge.dest, edge.weight) # type: ignore
+                for i in range(self.nVertex):
+                    if self.adjMatrix[edge.dest][i] != 0 and not self.vertices[i].visited: # type: ignore
+                        heap.insert(Edge(edge.dest, i, self.adjMatrix[edge.dest][i])) # type: ignore
+        for n in self.vertices: n.visited = False
+        return newGraph
+
+class Edge:
+    def __init__(self, src, dest, weight):
+        self.src = src
+        self.dest = dest
+        self.weight = weight
+
+    def __lt__(self, other):
+        return self.weight < other.weight
+
+    def __gt__(self, other):
+        return self.weight > other.weight
+
+    def __str__(self):
+        return str(self.src) + " " + str(self.dest) + " " + str(self.weight)
 
         
         
