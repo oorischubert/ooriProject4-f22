@@ -215,3 +215,4 @@ class Graph:
             lines[i] = lines[i].split(" ") # type: ignore #
             self.addEdge(int(lines[i][0]), int(lines[i][1]), int(lines[i][2]))
         grid.close()
+

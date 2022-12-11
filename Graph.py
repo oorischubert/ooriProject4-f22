@@ -13,8 +13,24 @@ class Vertex:
         self.i=i
         self.j=j
         self.visited=False
-    def __str__(self):
+
+    def __str__(self) -> str:
         return "("+str(self.i)+","+str(self.j)+")"
+
+class Edge:
+    def __init__(self, src, dest, weight):
+        self.src = src
+        self.dest = dest
+        self.weight = weight
+
+    def __lt__(self, other) -> bool:
+        return self.weight < other.weight
+
+    def __gt__(self, other) -> bool:
+        return self.weight > other.weight
+
+    def __str__(self) -> str:
+        return str(self.src) + " " + str(self.dest) + " " + str(self.weight)
 
 class Graph:
     def __init__(self,nx,ny):
@@ -132,6 +148,8 @@ class Graph:
 
     # The method load2Dgrid that reads the edge info from the file and initialize the matrix with weights. If a file does not exist, the code should stop executing without bug (while displaying some info saying the file does not exist)
     #The file contains the list of edges making the connections between two vertices (in global coordinates) associated with a given weight
+    #needs to work for rectangular matrices as well as square ones
+    
     def load2DGrid(self, file):
         try: grid = open(file, "r")
         except:
@@ -163,20 +181,6 @@ class Graph:
         for n in self.vertices: n.visited = False
         return newGraph
 
-class Edge:
-    def __init__(self, src, dest, weight):
-        self.src = src
-        self.dest = dest
-        self.weight = weight
-
-    def __lt__(self, other):
-        return self.weight < other.weight
-
-    def __gt__(self, other):
-        return self.weight > other.weight
-
-    def __str__(self):
-        return str(self.src) + " " + str(self.dest) + " " + str(self.weight)
 
         
         
