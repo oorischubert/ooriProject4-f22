@@ -9,9 +9,10 @@ from Heap import *
 import sys
 
 class Vertex:
-    def __init__(self,i,j):
+    def __init__(self,i,j,c):
         self.i=i
         self.j=j
+        self.label = c
         self.visited=False
 
     def __str__(self) -> str:
@@ -41,11 +42,18 @@ class Graph:
         self.adjMatrix=[[0 for i in range(self.nVertex)] for j in range(self.nVertex)] # adjacency matrix
         for i in range(nx):
             for j in range(ny):
-                self.vertices.append(Vertex(i,j))
+                self.vertices.append(Vertex(i,j,i*ny+j))
 
-    def addEdge(self,i,j,size=1) -> None:
-        self.adjMatrix[i][j]=size
-        self.adjMatrix[j][i]=size
+    def addEdge(self,c1,c2,size=1) -> None:
+        i1,i2=None,None
+        for i in range(len(self.vertices)):
+            n=self.vertices[i]
+            if n.label==c1: i1=i
+            if n.label==c2: i2=i
+        if (i1 is not None) and (i2 is not None):
+            self.adjMatrix[i1][i2]=size
+            self.adjMatrix[i2][i1]=size
+
 
     def form2DGrid(self) -> None:
         for i in range(self.nx):
