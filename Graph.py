@@ -146,11 +146,7 @@ class Graph:
                 return i
         return None
 
-    # The method load2Dgrid that reads the edge info from the file and initialize the matrix with weights. If a file does not exist, the code should stop executing without bug (while displaying some info saying the file does not exist)
-    #The file contains the list of edges making the connections between two vertices (in global coordinates) associated with a given weight
-    #needs to work for rectangular matrices as well as square ones
-    
-    def load2DGrid(self, file):
+    def load2DGrid(self, file) -> None:
         try: grid = open(file, "r")
         except:
                 print("File " + file + " does not exist!")
